@@ -1,0 +1,7 @@
+{
+  "rotors": [ "I", "III", "IV", "II" ],
+  "ringSettings": [ 2, 1, 10, 5 ],
+  "rotorPositions": [ 5, 23, 3, 1 ],
+  "reflector": "B",
+  "plugboard": [ "AV", "BS", "CG", "DL", "FU", "HZ", "IN", "KM", "OW", "RX" ]
+}

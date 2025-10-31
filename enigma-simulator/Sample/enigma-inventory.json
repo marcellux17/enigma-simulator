@@ -1,0 +1,49 @@
+{
+  "rotors": [
+    {
+      "name": "I",
+      "ringSetting": 1,
+      "turnover": 17,
+      "wiring": "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+    },
+    {
+      "name": "II",
+      "ringSetting": 1,
+      "turnover": 5,
+      "wiring": "AJDKSIRUXBLHWTMCQGZNPYFVOE"
+    },
+    {
+      "name": "III",
+      "ringSetting": 1,
+      "turnover": 22,
+      "wiring": "BDFHJLCPRTXVZNYEIWGAKMUSQO"
+    },
+    {
+      "name": "IV",
+      "ringSetting": 1,
+      "turnover": 10,
+      "wiring": "ESOVPZJAYQUIRHXLNFTGKDCMWB"
+    },
+    {
+      "name": "V",
+      "ringSetting": 1,
+      "turnover": 26,
+      "wiring": "VZBRGITYUPSDNHLXAWMJQOFECK"
+    }
+  ],
+  "reflectors": [
+    {
+      "name": "A",
+      "wiring": [ "AE", "BJ", "CM", "DZ", "FL", "GY", "HX", "IV", "KR", "NQ", "OT", "PW", "SU" ]
+    },
+    {
+      "name": "B",
+      "wiring": [ "AY", "BR", "CU", "DH", "EQ", "FS", "GL", "IP", "JX", "KN", "MO", "TZ", "VW" ]
+    },
+    {
+      "name": "C",
+      "wiring": [ "AF", "BV", "CP", "DJ", "EI", "GO", "HY", "KR", "LZ", "MX", "NW", "QT", "SU" ]
+    }
+  ]
+}
+
