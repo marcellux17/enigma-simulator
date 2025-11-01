@@ -1,4 +1,5 @@
-﻿namespace enigma_simulator
+﻿using Newtonsoft.Json;
+namespace enigma_simulator
 {
     class Program
     {
@@ -6,9 +7,13 @@
         {
             try
             {
-                string inputFileName = GetInputFileName(args);
+                //string inputFileName = GetInputFileName(args);
                 var c = new Controller();
-                c.Initialize(inputFileName);
+                c.Initialize("input.txt");
+            }
+            catch(JsonException ex)
+            {
+                Console.WriteLine("An error occured while parsing your enigma configuration files. Check that your json files are in valid format.");
             }
             catch (Exception ex)
             {

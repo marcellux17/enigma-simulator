@@ -11,7 +11,7 @@ namespace enigma_simulator
     {
         Dictionary<string, Rotor> rotorsAvailble; //key: rotor's name
         Dictionary<string, Reflector> reflectorsAvailble; //key reflector's name
-        Enigma enigma;
+        Enigma? enigma;
         public Controller() 
         {
             rotorsAvailble = new Dictionary<string, Rotor>();
@@ -45,19 +45,27 @@ namespace enigma_simulator
         private EnigmaSettingsDto ReadEnigmaSettingsFile(string fileName)
         {
             string lines = ReadFile(fileName);
-            EnigmaSettingsDto settings = JsonConvert.DeserializeObject<EnigmaSettingsDto>(lines);
+            EnigmaSettingsDto? settings = JsonConvert.DeserializeObject<EnigmaSettingsDto>(lines);
+            if(settings == null)
+            {
+                throw new Exception("Enigma settings empty. Check your settings file.");
+            }
             return settings;
         }
         private EnigmaInventoryDto ReadEnigmaInventoryFile(string fileName)
         {
             string lines = ReadFile(fileName);
-            EnigmaInventoryDto parts = JsonConvert.DeserializeObject<EnigmaInventoryDto>(lines);
+            EnigmaInventoryDto? parts = JsonConvert.DeserializeObject<EnigmaInventoryDto>(lines);
+            if (parts == null)
+            {
+                throw new Exception("Eniga inventory empty. Check your settings file.");
+            }
             return parts;
         }
         private string ReadFile(string fileName)
         {
             string lines = "";
-            string line;
+            string? line;
             string workingDirectory = Directory.GetCurrentDirectory();
             StreamReader sr = new StreamReader(Path.Combine(workingDirectory, fileName));
             line = sr.ReadLine();
@@ -79,6 +87,10 @@ namespace enigma_simulator
 
         private Plugboard GetPlugboardFromSettings(EnigmaSettingsDto enigmaSettingsDto)
         {
+            if(enigmaSettingsDto.Plugboard == null)
+            {
+                throw new Exception("No plugboard settings were specified. Check your settings file.");
+            }
             bool[] lettersChecked = new bool[26];
             for (int i = 0; i < enigmaSettingsDto.Plugboard.Length; i++)
             {
@@ -112,7 +124,7 @@ namespace enigma_simulator
             {
                 throw new Exception("A reflector name must be specified for a valid enigma setting. Check your settings file.");
             }
-            if (!reflectorsAvailble.TryGetValue(enigmaSettingsDto.Reflector, out Reflector reflector))
+            if (!reflectorsAvailble.TryGetValue(enigmaSettingsDto.Reflector, out Reflector? reflector))
             {
                 throw new Exception($"Specified reflector does not exist: {enigmaSettingsDto.Reflector}. Check your settings file.");
             }
@@ -146,7 +158,7 @@ namespace enigma_simulator
             for (int i = 0; i < enigmaSettingsDto.Rotors.Length; i++)
             {
                 string rotorName = enigmaSettingsDto.Rotors[i];
-                if (!rotorsAvailble.TryGetValue(enigmaSettingsDto.Rotors[i], out Rotor rotor))
+                if (!rotorsAvailble.TryGetValue(enigmaSettingsDto.Rotors[i], out Rotor? rotor))
                 {
                     throw new Exception($"Specified rotor does not exist: {enigmaSettingsDto.Rotors[i]}. Check your settings file.");
                 }
@@ -169,11 +181,11 @@ namespace enigma_simulator
         {
             if (enigmaInventoryDto.rotors == null || enigmaInventoryDto.rotors.Length == 0)
             {
-                throw new Exception("No rotors were specified.");
+                throw new Exception("No rotors were specified. Check your inventory file.");
             }
             if (enigmaInventoryDto.reflectors == null || enigmaInventoryDto.reflectors.Length == 0)
             {
-                throw new Exception("No reflectos were specified.");
+                throw new Exception("No reflectos were specified. Check your inventory file.");
             }
             for (int i = 0; i < enigmaInventoryDto.rotors.Length; i++)
             {
@@ -190,11 +202,11 @@ namespace enigma_simulator
         {
             if (reflectorDto.Name == null || reflectorDto.Name == string.Empty)
             {
-                throw new Exception("Reflectors must have their names specified.");
+                throw new Exception("Reflectors must have their names specified. Check your inventory file.");
             }
             if (reflectorDto.Wiring == null || reflectorDto.Wiring.Length != 13)
             {
-                throw new Exception($"Wiring of a reflector must be an array of length 13, containing strings of length 2. Reflector at fault: {reflectorDto.Name}");
+                throw new Exception($"Wiring of a reflector must be an array of length 13, containing strings of length 2. Reflector at fault: {reflectorDto.Name}. Check your inventory file.");
             }
 
             bool[] lettersChecked = new bool[26];
@@ -203,21 +215,21 @@ namespace enigma_simulator
                 string currentPair = reflectorDto.Wiring[i];
                 if (currentPair.Length != 2)
                 {
-                    throw new Exception($"Wiring of a reflector must be an array of length 13, containing strings of length 2. Reflector at fault: {reflectorDto.Name}");
+                    throw new Exception($"Wiring of a reflector must be an array of length 13, containing strings of length 2. Reflector at fault: {reflectorDto.Name}. Check your inventory file.");
                 }
                 if (!LetterPartOfAlphabet(currentPair[0]) || !LetterPartOfAlphabet(currentPair[1]))
                 {
-                    throw new Exception($"Invalid character found in wiring: {currentPair}. Reflector at fault: {reflectorDto.Name}.");
+                    throw new Exception($"Invalid character found in wiring: {currentPair}. Reflector at fault: {reflectorDto.Name}. Check your inventory file.");
                 }
                 currentPair = currentPair.ToLower();
                 if (lettersChecked[currentPair[0] - 'a'])
                 {
-                    throw new Exception($"Duplicate characters found in wiring: {currentPair[0]}. Reflector at fault: {reflectorDto.Name}.");
+                    throw new Exception($"Duplicate characters found in wiring: {currentPair[0]}. Reflector at fault: {reflectorDto.Name}. Check your inventory file.");
                 }
                 lettersChecked[currentPair[0] - 'a'] = true;
                 if (lettersChecked[currentPair[1] - 'a'])
                 {
-                    throw new Exception($"Duplicate characters found in wiring: {currentPair[1]}. Reflector at fault: {reflectorDto.Name}.");
+                    throw new Exception($"Duplicate characters found in wiring: {currentPair[1]}. Reflector at fault: {reflectorDto.Name}. Check your inventory file.");
                 }
                 lettersChecked[currentPair[1] - 'a'] = true;
             }
@@ -227,23 +239,23 @@ namespace enigma_simulator
         {
             if (rotorDto.Name == null || rotorDto.Name == string.Empty)
             {
-                throw new Exception("Rotors must have their names specified.");
+                throw new Exception("Rotors must have their names specified. Check your inventory file.");
             }
             if (rotorDto.Turnover < 1 || rotorDto.Turnover > 26)
             {
-                throw new Exception($"Invalid turnover number: {rotorDto.Turnover}. Turnover must be between 1 and 26. Rotor at fault: {rotorDto.Name}.");
+                throw new Exception($"Invalid turnover number: {rotorDto.Turnover}. Turnover must be between 1 and 26. Rotor at fault: {rotorDto.Name}. Check your inventory file.");
             }
             if (rotorDto.RingSetting < 1 || rotorDto.RingSetting > 26)
             {
-                throw new Exception($"Invalid ring setting: {rotorDto.RingSetting}. Ring setting must be between 1 and 26. Rotor at fault: {rotorDto.Name}.");
+                throw new Exception($"Invalid ring setting: {rotorDto.RingSetting}. Ring setting must be between 1 and 26. Rotor at fault: {rotorDto.Name}. Check your inventory file.");
             }
             if (rotorDto.Wiring.Length != 26)
             {
-                throw new Exception($"Wiring of a rotor must be a string of length 26, containing all letters from a to z. Rotor at fault: {rotorDto.Name}.");
+                throw new Exception($"Wiring of a rotor must be a string of length 26, containing all letters from a to z. Rotor at fault: {rotorDto.Name}. Check your inventory file.");
             }
             if (rotorDto.Wiring == null)
             {
-                throw new Exception($"No wiring was found. Rotor at fault: {rotorDto.Name}.");
+                throw new Exception($"No wiring was found. Rotor at fault: {rotorDto.Name}. Check your inventory file.");
             }
             bool[] lettersChecked = new bool[26];
             for (int i = 0; i < 26; i++)
@@ -251,12 +263,12 @@ namespace enigma_simulator
                 char currentLetter = rotorDto.Wiring[i];
                 if (!LetterPartOfAlphabet(currentLetter))
                 {
-                    throw new Exception($"Invalid character found in wiring: {currentLetter}. Rotor at fault: {rotorDto.Name}.");
+                    throw new Exception($"Invalid character found in wiring: {currentLetter}. Rotor at fault: {rotorDto.Name}. Check your inventory file.");
                 }
                 currentLetter = char.ToLower(currentLetter);
                 if (lettersChecked[currentLetter - 'a'])
                 {
-                    throw new Exception($"Duplicate letter found in wiring: {currentLetter}. Rotor at fault: {rotorDto.Name}.");
+                    throw new Exception($"Duplicate letter found in wiring: {currentLetter}. Rotor at fault: {rotorDto.Name}. Check your inventory file.");
                 }
                 lettersChecked[currentLetter - 'a'] = true;
             }
