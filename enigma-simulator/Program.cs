@@ -7,9 +7,9 @@ namespace enigma_simulator
         {
             try
             {
-                //string inputFileName = GetInputFileName(args);
+                string inputFileName = GetInputFileName(args);
                 var c = new Controller();
-                c.Initialize("input.txt");
+                c.Initialize(inputFileName);
             }
             catch(JsonException ex)
             {
