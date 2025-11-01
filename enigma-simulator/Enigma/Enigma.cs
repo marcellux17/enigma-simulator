@@ -17,17 +17,17 @@ namespace enigma_simulator
             reflector = reflectorGiven;
             plugboard = plugboardGiven;
         }
-        private int getLetterPosition(char letter)
+        private int GetLetterPosition(char letter)
         {
             return letter - 'a';
         }
-        private char getLetterFromPosition(int position)
+        private char GetLetter(int position)
         {
             return (char)('a' + position);
         }
         private char TransformLetter(char letter)
         {
-            int letterPosition = getLetterPosition(letter);
+            int letterPosition = GetLetterPosition(letter);
             int transformed = plugboard.Transform(letterPosition);
             for (int i = rotors.Length - 1; i >= 0; i--)
             {
@@ -39,7 +39,7 @@ namespace enigma_simulator
                 transformed = rotors[i].InBackward(transformed);
             }
             transformed = plugboard.Transform(transformed);
-            return getLetterFromPosition(transformed);
+            return GetLetter(transformed);
         }
         public string TypeText(string text)
         {
@@ -51,9 +51,9 @@ namespace enigma_simulator
                 outputText += TransformLetter(lowered[i]);
                 RotateRotors();
             }
-            return formatOutput(outputText);
+            return FormatOutputText(outputText);
         }
-        private string formatOutput(string output)
+        private string FormatOutputText(string output)
         {
             int numberOfGroupsPerLine = 10;
             int groupLetterCount = 7;

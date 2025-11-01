@@ -21,11 +21,11 @@ namespace enigma_simulator
             Name = name;
             turnover = turnoverAt - 1;
             ringOffset = ringSetting - 1;
-            wiringForward = getWiringMapForward(wiring);
-            wiringBackward = getWiringMapBackward(wiring);
+            wiringForward = GetWiringMapForward(wiring);
+            wiringBackward = GetWiringMapBackward(wiring);
 
         }
-        private int[] getWiringMapBackward(string wiring)
+        private int[] GetWiringMapBackward(string wiring)
         {
             int[] wiringMap = new int[26];
             for (int i = 0; i < 26; i++)
@@ -35,7 +35,7 @@ namespace enigma_simulator
             }
             return wiringMap;
         }
-        private int[] getWiringMapForward(string wiring)
+        private int[] GetWiringMapForward(string wiring)
         {
             int[] wiringMap = new int[26];
             for (int i = 0; i < 26; i++)
