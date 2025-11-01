@@ -16,34 +16,17 @@ namespace enigma_simulator
         {
             rotorsAvailble = new Dictionary<string, Rotor>();
             reflectorsAvailble = new Dictionary<string, Reflector>();
-            try
-            {
-                string[] arguments = Environment.GetCommandLineArgs();
-                if (arguments.Length > 2)
-                {
-                    throw new Exception("Too many arguments provided. Only provide the input file name.");
-                }
-                if(arguments.Length < 2)
-                {
-                    throw new Exception("Input file name not provided. Provide input file name.");
-                }
-                string inputFileName = arguments[1];
-
-                EnigmaInventoryDto inventoryDto = ReadEnigmaInventoryFile("enigma-inventory.json");
-                ConvertEnigmaInventoryDto(inventoryDto);
-
-                EnigmaSettingsDto settingsDto = ReadEnigmaSettingsFile("enigma-settings.json");
-                ConvertEnigmaSettingsDto(settingsDto);
-
-                TypeInputFile(inputFileName, "output.txt");
-                
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
+        public void Initialize(string inputFileName)
+        {
+            EnigmaInventoryDto inventoryDto = ReadEnigmaInventoryFile("enigma-inventory.json");
+            ConvertEnigmaInventoryDto(inventoryDto);
 
+            EnigmaSettingsDto settingsDto = ReadEnigmaSettingsFile("enigma-settings.json");
+            ConvertEnigmaSettingsDto(settingsDto);
+
+            TypeInputFile(inputFileName, "output.txt");
+        }
         private void TypeInputFile(string inputFileName, string outputFileName)
         {
             string plainText = ReadFile(inputFileName);
