@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
+
 namespace enigma_simulator
 {
     class Program
@@ -9,7 +10,7 @@ namespace enigma_simulator
             {
                 string inputFileName = GetInputFileName(args);
                 var c = new Controller();
-                c.Initialize(inputFileName);
+                c.Initialize("input.txt");
             }
             catch(JsonException ex)
             {

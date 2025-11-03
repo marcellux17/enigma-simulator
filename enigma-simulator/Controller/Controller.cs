@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
 namespace enigma_simulator
 {
@@ -45,8 +40,11 @@ namespace enigma_simulator
         private EnigmaSettingsDto ReadEnigmaSettingsFile(string fileName)
         {
             string lines = ReadFile(fileName);
-            EnigmaSettingsDto? settings = JsonConvert.DeserializeObject<EnigmaSettingsDto>(lines);
-            if(settings == null)
+
+            JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            EnigmaSettingsDto? settings = JsonSerializer.Deserialize<EnigmaSettingsDto>(lines, options);
+
+            if (settings == null)
             {
                 throw new Exception("Enigma settings empty. Check your settings file.");
             }
@@ -55,10 +53,13 @@ namespace enigma_simulator
         private EnigmaInventoryDto ReadEnigmaInventoryFile(string fileName)
         {
             string lines = ReadFile(fileName);
-            EnigmaInventoryDto? parts = JsonConvert.DeserializeObject<EnigmaInventoryDto>(lines);
+
+            JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            EnigmaInventoryDto? parts = JsonSerializer.Deserialize<EnigmaInventoryDto>(lines, options);
+
             if (parts == null)
             {
-                throw new Exception("Eniga inventory empty. Check your settings file.");
+                throw new Exception("Enigma inventory empty. Check your inventory file.");
             }
             return parts;
         }
