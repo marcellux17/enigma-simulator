@@ -2,37 +2,37 @@
 {
     internal class Enigma
     {
-        Reflector reflector;
-        Plugboard plugboard;
-        Rotor[] rotors;
-        public Enigma(Rotor[] rotorsGiven, Reflector reflectorGiven, Plugboard plugboardGiven)
+        Reflector _reflector;
+        Plugboard _plugboard;
+        Rotor[] _rotors;
+        public Enigma(Rotor[] rotors, Reflector reflectors, Plugboard plugboard)
         {
-            rotors = rotorsGiven;
-            reflector = reflectorGiven;
-            plugboard = plugboardGiven;
+            _rotors = rotors;
+            _reflector = reflectors;
+            _plugboard = plugboard;
         }
-        private int GetLetterPosition(char letter)
+        int GetLetterPosition(char letter)
         {
             return letter - 'a';
         }
-        private char GetLetter(int position)
+        char GetLetter(int position)
         {
             return (char)('a' + position);
         }
-        private char TransformLetter(char letter)
+        char TransformLetter(char letter)
         {
             int letterPosition = GetLetterPosition(letter);
-            int transformed = plugboard.Transform(letterPosition);
-            for (int i = rotors.Length - 1; i >= 0; i--)
+            int transformed = _plugboard.Transform(letterPosition);
+            for (int i = _rotors.Length - 1; i >= 0; i--)
             {
-                transformed = rotors[i].InForward(transformed);
+                transformed = _rotors[i].InForward(transformed);
             }
-            transformed = reflector.Transform(transformed);
-            for (int i = 0; i < rotors.Length; i++)
+            transformed = _reflector.Transform(transformed);
+            for (int i = 0; i < _rotors.Length; i++)
             {
-                transformed = rotors[i].InBackward(transformed);
+                transformed = _rotors[i].InBackward(transformed);
             }
-            transformed = plugboard.Transform(transformed);
+            transformed = _plugboard.Transform(transformed);
             return GetLetter(transformed);
         }
         public string TypeText(string text)
@@ -76,18 +76,18 @@
         private void RotateRotors()
         {
             int i = 0;
-            while (i < rotors.Length)
+            while (i < _rotors.Length)
             {
-                if (i == rotors.Length - 1)
+                if (i == _rotors.Length - 1)
                 {
-                    rotors[i].Rotate();
+                    _rotors[i].Rotate();
                     break;
                 }
 
-                if (rotors[i + 1].IsAtTurnover())
+                if (_rotors[i + 1].IsAtTurnover())
                 {
-                    rotors[i].Rotate();
-                    rotors[i + 1].Rotate();
+                    _rotors[i].Rotate();
+                    _rotors[i + 1].Rotate();
                     i += 2;
                 }
                 else

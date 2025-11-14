@@ -2,24 +2,24 @@
 {
     internal class Plugboard
     {
-        int[] wiring;
+        int[] _wiring;
         public Plugboard(string[] wiringSettings)
         {
-            wiring = new int[26];
+            _wiring = new int[26];
             for (int i = 0; i < 26; i++)
             {
-                wiring[i] = i;
+                _wiring[i] = i;
             }
             for (int i = 0; i < wiringSettings.Length; i++)
             {
                 string currentMap = wiringSettings[i];
-                wiring[currentMap[0] - 'a'] = currentMap[1] - 'a';
-                wiring[currentMap[1] - 'a'] = currentMap[0] - 'a';
+                _wiring[currentMap[0] - 'a'] = currentMap[1] - 'a';
+                _wiring[currentMap[1] - 'a'] = currentMap[0] - 'a';
             }
         }
         public int Transform(int position)
         {
-            return wiring[position];
+            return _wiring[position];
         }
     }
 }
