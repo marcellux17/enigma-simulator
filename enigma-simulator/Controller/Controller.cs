@@ -4,8 +4,8 @@ namespace enigma_simulator
 {
     internal class Controller
     {
-        Dictionary<string, Rotor> _rotorsAvailable; //key: rotor's name
-        Dictionary<string, Reflector> _reflectorsAvailable; //key reflector's name
+        readonly Dictionary<string, Rotor> _rotorsAvailable; //key: rotor's name
+        readonly Dictionary<string, Reflector> _reflectorsAvailable; //key reflector's name
         Enigma? enigma;
         public Controller() 
         {
@@ -171,8 +171,8 @@ namespace enigma_simulator
                 {
                     throw new Exception($"Invalid rotor positions found for rotor: {rotor.Name}. Rotor position must be a number between 1 and 26. Check your settings file.");
                 }
-                rotor.ringOffset = enigmaSettingsDto.RingSettings[i] - 1;
-                rotor.currentRotorPosition = enigmaSettingsDto.RotorPositions[i] - 1;
+                rotor.RingOffset = enigmaSettingsDto.RingSettings[i] - 1;
+                rotor.CurrentRotorPosition = enigmaSettingsDto.RotorPositions[i] - 1;
                 rotors[i] = rotor;
             }
             return rotors;

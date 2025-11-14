@@ -2,8 +2,8 @@
 {
     internal class Reflector
     {
-        public string Name;
-        int[] _wiring;
+        readonly public string Name;
+        readonly int[] _wiring;
         public Reflector(string name, string[] wiringSettings)
         {
             Name = name;

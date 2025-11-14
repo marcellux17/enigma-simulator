@@ -2,9 +2,9 @@
 {
     internal class Enigma
     {
-        Reflector _reflector;
-        Plugboard _plugboard;
-        Rotor[] _rotors;
+        readonly Reflector _reflector;
+        readonly Plugboard _plugboard;
+        readonly Rotor[] _rotors;
         public Enigma(Rotor[] rotors, Reflector reflectors, Plugboard plugboard)
         {
             _rotors = rotors;
@@ -47,7 +47,7 @@
             }
             return FormatOutputText(outputText);
         }
-        private string FormatOutputText(string output)
+        string FormatOutputText(string output)
         {
             int numberOfGroupsPerLine = 10;
             int groupLetterCount = 7;
@@ -73,7 +73,7 @@
             }
             return formattedText;
         }
-        private void RotateRotors()
+        void RotateRotors()
         {
             int i = 0;
             while (i < _rotors.Length)

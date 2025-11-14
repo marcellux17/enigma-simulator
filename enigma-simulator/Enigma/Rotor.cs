@@ -2,20 +2,21 @@
 {
     internal class Rotor
     {
-        public string Name;
-        public int currentRotorPosition; //0-25
-        public int ringOffset;
-        int _turnover;//0-25
-        int[] _wiringForward;
-        int[] _wiringBackward;
+        public int CurrentRotorPosition; //0-25
+        public int RingOffset;
+
+        readonly public string Name;
+        readonly int _turnover;//0-25
+        readonly int[] _wiringForward;
+        readonly int[] _wiringBackward;
 
         public Rotor(string name, string wiring, int turnoverAt, int ringSetting)//turnoverAt 1-26, ringSetting 1-26
         {
             _wiringForward = GetWiringMapForward(wiring);
             _wiringBackward = GetWiringMapBackward(wiring);
             _turnover = turnoverAt - 1;
-            currentRotorPosition = 0;
-            ringOffset = ringSetting - 1;
+            CurrentRotorPosition = 0;
+            RingOffset = ringSetting - 1;
             Name = name;
         }
         int[] GetWiringMapBackward(string wiring)
@@ -40,23 +41,23 @@
         }
         public int InForward(int position)//0-25
         {
-            int contactPosition = (position + currentRotorPosition + ringOffset) % 26;
+            int contactPosition = (position + CurrentRotorPosition + RingOffset) % 26;
             int mapsTo = _wiringForward[contactPosition];
-            return (mapsTo - ringOffset - currentRotorPosition + 52) % 26;
+            return (mapsTo - RingOffset - CurrentRotorPosition + 52) % 26;
         }
         public int InBackward(int position)//0-25
         {
-            int contactPosition = (position + currentRotorPosition + ringOffset) % 26;
+            int contactPosition = (position + CurrentRotorPosition + RingOffset) % 26;
             int mapsFrom = _wiringBackward[contactPosition];
-            return (mapsFrom - ringOffset - currentRotorPosition + 52) % 26;
+            return (mapsFrom - RingOffset - CurrentRotorPosition + 52) % 26;
         }
         public void Rotate()
         {
-            currentRotorPosition = (currentRotorPosition + 1) % 26;
+            CurrentRotorPosition = (CurrentRotorPosition + 1) % 26;
         }
         public bool IsAtTurnover()
         {
-            return _turnover == currentRotorPosition;
+            return _turnover == CurrentRotorPosition;
         }
     }
 }

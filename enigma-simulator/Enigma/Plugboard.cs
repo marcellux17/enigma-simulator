@@ -2,7 +2,7 @@
 {
     internal class Plugboard
     {
-        int[] _wiring;
+        readonly int[] _wiring;
         public Plugboard(string[] wiringSettings)
         {
             _wiring = new int[26];
